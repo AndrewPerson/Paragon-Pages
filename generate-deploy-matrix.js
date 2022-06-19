@@ -27,12 +27,12 @@ for (let directory of directories) {
         });
     }
     catch (e) {
-        
+
     }
 }
 
 console.log(JSON.stringify({
-    project: configs.length === null ? null : configs.map(config => 
+    project: configs.length === 0 ? null : configs.map(config => 
         ({
             name: config.name,
             directory: config.directory,
