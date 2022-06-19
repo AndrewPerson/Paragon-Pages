@@ -26,9 +26,6 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Print deploy matrix
-        run: node generate-deploy-matrix.js
-
       # This step uses the file in ${HOME}/files.json outputted by the previous step
       - name: Generate deploy matrix
         id: generate-matrix
@@ -39,7 +36,7 @@ jobs:
 
   deploy:
     # Hack to check if length of array is not 0, as github actions doesn't like that.
-    if: needs.generate-deploy-matrix.outputs.matrix != null
+    if: needs.generate-deploy-matrix.outputs.matrix.project != null
 
     needs: generate-deploy-matrix
 
