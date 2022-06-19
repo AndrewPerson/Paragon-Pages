@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="195px" height="211px" viewBox="0 0 195 211" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <g id="Ribbon" transform="translate(5 5)" filter="brightness(2)">
+    <path d="M143.24 100.5L185 164.286L143.24 164.098C140.518 164.086 137.991 165.41 136.596 167.58L115.769 200L94 140.5" id="Shape" fill="none" stroke="#465F97" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M41.7596 100.5L0 164.286L41.7596 164.098C44.4819 164.085 47.0087 165.41 48.4039 167.58L69.2308 200L100 125.5" id="Shape" fill="none" stroke="#465F97" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M61.2308 62.5714C61.2308 46.0029 74.6622 32.5714 91.2308 32.5714C107.799 32.5714 121.231 46.0029 121.231 62.5714C121.231 79.14 107.799 92.5714 91.2308 92.5714C74.6622 92.5714 61.2308 79.14 61.2308 62.5714Z" id="Circle" fill="none" fill-rule="evenodd" stroke="#B0971D" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M29.4615 62.5C29.4615 27.9822 57.4437 0 91.9615 0C126.479 0 154.462 27.9822 154.462 62.5C154.462 97.0178 126.479 125 91.9615 125C57.4437 125 29.4615 97.0178 29.4615 62.5Z" id="Circle" fill="none" fill-rule="evenodd" stroke="#E6C62C" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+on: [
+  push,
+  workflow_dispatch
+]
+
+jobs:
+  generate-deploy-matrix:
+    runs-on: ubuntu-latest
+
+    name: "Generate deploy matrix"
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get changed files
+        uses: lots0logs/gh-action-get-changed-files@2.1.4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      # This step uses the file in ${HOME}/files.json outputted by the previous step
+      - name: Generate deploy matrix
+        id: generate-matrix
+        run: echo "::set-output name=matrix::$(node generate-deploy-matrix.js)"
+
+    outputs:
+      matrix: ${{ steps.generate-matrix.outputs.matrix }}
+
+  deploy:
+    # Hack to check if length of array is not 0, as github actions doesn't like that.
+    if: needs.generate-deploy-matrix.outputs.matrix != null
+
+    needs: generate-deploy-matrix
+
+    runs-on: ubuntu-latest
+
+    name: Deploy to Cloudflare Pages
+
+    permissions:
+      contents: read
+      deployments: write
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-deploy-matrix.outputs.matrix) }}
+    
+    steps:
+      - name: Build
+        run: ${{ matrix.project.build }}
+        if: matrix.project.build != null
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Publish
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ matrix.project.name }}
+          directory: ${{ matrix.project.directory }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

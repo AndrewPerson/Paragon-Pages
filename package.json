@@ -1,0 +1,20 @@
+{
+  "name": "paragon-pages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generate-deploy-matrix.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewPerson/Paragon-Pages.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndrewPerson/Paragon-Pages/issues"
+  },
+  "homepage": "https://github.com/AndrewPerson/Paragon-Pages#readme",
+  "type": "module"
+}
