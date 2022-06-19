@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Print deploy matrix
+        run: node generate-deploy-matrix.js
+
       # This step uses the file in ${HOME}/files.json outputted by the previous step
       - name: Generate deploy matrix
         id: generate-matrix
