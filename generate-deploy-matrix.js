@@ -17,8 +17,6 @@ for (let file of files) {
 let configs = [];
 for (let directory of directories) {
     try {
-        await access(`./${directory}/config.json`);
-
         let config = JSON.parse(await readFile(`./${directory}/config.json`));
 
         configs.push({
