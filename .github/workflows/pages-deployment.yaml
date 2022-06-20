@@ -30,7 +30,7 @@ jobs:
         if: inputs.directories == null
 
       - name: Write directories to upload
-        run: echo ${{ inputs.directories }} > $HOME/files.json
+        run: echo '${{ inputs.directories }}' > $HOME/files.json
         if: inputs.directories != null
 
       - name: Install Node.js 16.x
