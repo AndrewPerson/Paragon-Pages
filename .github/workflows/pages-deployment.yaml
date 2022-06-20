@@ -72,16 +72,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Navigate to directory
-        run: cd ./${{ matrix.project.directory }}
-
       - name: Build
-        run: ${{ matrix.project.build }}
+        run: cd ./${{ matrix.project.directory }} & ${{ matrix.project.build }}
         if: matrix.project.build != null
-
-      - name: Navigate out of directory if the root directory needs to be uploaded
-        run: cd ..
-        if: matrix.project.upload == null
         
       - name: Publish root folder for Page
         uses: cloudflare/pages-action@1
@@ -99,6 +92,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ matrix.project.name }}
-          directory: ${{ matrix.project.upload }}
+          directory: ${{matrix.project.directory}}/${{ matrix.project.upload }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
         if: matrix.project.upload != null
