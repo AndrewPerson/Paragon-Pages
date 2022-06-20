@@ -1,4 +1,5 @@
 import { readFile } from "fs/promises";
+import path from "path";
 import process from "process";
 
 let files = JSON.parse(await readFile(`${process.env.HOME}/files.json`));
@@ -26,12 +27,15 @@ for (let directory of directories) {
 }
 
 if (configs.length != 0) console.log(JSON.stringify({
-    project: configs.map(config => 
-        ({
+    project: configs.map(config => {
+        let fullUploadPath = path.resolve(config.directory, config.upload ?? "").split("/");
+
+        return {
             name: config.name,
-            directory: config.directory,
             build: config.build ?? null,
-            upload: config.upload ?? ""
-        })
-    )
+            "build-working-directory": config.directory,
+            upload: fullUploadPath[fullUploadPath.length - 1],
+            "upload-working-directory": fullUploadPath.length == 1  ? "" : fullUploadPath[0]
+        };
+    })
 }));
