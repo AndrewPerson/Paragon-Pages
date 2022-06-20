@@ -30,8 +30,8 @@ if (configs.length != 0) console.log(JSON.stringify({
         ({
             name: config.name,
             directory: config.directory,
-            build: config.build || null,
-            upload: config.upload || "."
+            build: config.build ?? null,
+            upload: config.upload ?? ""
         })
     )
 }));
