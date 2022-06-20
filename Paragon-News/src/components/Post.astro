@@ -1,0 +1,124 @@
+---
+import { Markdown } from 'astro/components';
+
+const { title, date, content } = Astro.props;
+---
+
+<article title={title}>
+	<input type="checkbox" oninput={`window.SaveRead('${title}', this.checked)`}>
+	<details>
+		<summary>
+			<h1>{title}</h1>
+			<p class="info">Published {date}</p>
+		</summary>
+
+		<Markdown content={content} />
+	</details>
+</article>
+
+<style>
+	article {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.3rem;
+
+		margin: 0.4rem;
+		margin-bottom: 1.2rem;
+	}
+
+	details {
+		width: 100%;
+	}
+
+	details, summary {
+		--user-select: text;
+		cursor: text;
+	}
+
+	summary {
+		position: relative;
+
+		list-style: none;
+
+		margin-bottom: 0.4rem;
+
+		border-radius: 0.1rem;
+	}
+
+	summary:focus-visible {
+		box-shadow: 0 0 0 0.4rem var(--surface4), var(--shadow);
+		outline: none;
+	}
+
+	summary > * {
+		cursor: pointer;
+	}
+
+	summary > h1 {
+		font-size: 1.4rem;
+	}
+
+	summary::after {
+		content: "";
+
+		position: absolute;
+		top: 0;
+		right: 0;
+
+		display: block;
+		width: 1.5rem;
+		height: 1.5rem;
+
+		margin-left: auto;
+		
+		background-image: url(/assets/toggle.svg);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position-y: center;
+
+		cursor: pointer;
+
+		transform: rotate(180deg);
+
+		filter: invert(var(--img-invert)) hue-rotate(var(--hue-rotate));
+
+		transition: 0.3s;
+	}
+
+	details[open] > summary::after {
+		transform: none;
+	}
+
+	.info {
+		font-size: 0.7rem;
+	}
+
+	input[type="checkbox"] {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+
+	input[type="checkbox"]::after {
+		content: "";
+
+		display: block;
+		width: 0.5rem;
+		height: 0.5rem;
+
+		margin-top: 0.5rem;
+
+		background-color: var(--surface4);
+
+		border-radius: 100%;
+
+		cursor: pointer;
+
+		box-sizing: border-box;
+	}
+
+	input[type="checkbox"]:checked::after {
+		background-color: transparent;
+		border: 0.08rem solid var(--surface4);
+	}
+</style>

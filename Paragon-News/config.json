@@ -1,0 +1,13 @@
+{
+    "name": "news-paragon-pages",
+    "build": "bash ./build.sh",
+    "upload": "dist",
+    "metadata": {
+        "navIcon": "/nav-icon.svg",
+        "preview": false,
+        "description": "Displays the latest news from Paragon.",
+        "icon": "/icon.svg",
+        "darkIcon": "/dark-icon.svg",
+        "version": "0.0.2"
+    }
+}

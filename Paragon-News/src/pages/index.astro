@@ -1,0 +1,129 @@
+---
+import Post from "../components/Post.astro";
+import { readFile } from "fs/promises";
+
+const posts = await Astro.glob("../components/posts/*.md");
+
+posts.sort((a, b) => {
+	let diff = new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime();
+
+	if (diff == 0) return (b.frontmatter.priority ?? 0) - (a.frontmatter.priority ?? 0);
+	else return diff;
+});
+---
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Paragon News</title>
+
+	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+	<base target="_blank">
+
+	<link href="https://paragon.pages.dev/css/app.css" rel="stylesheet">
+	<link href="https://paragon.pages.dev/css/default/text.css" rel="stylesheet">
+	<link href="https://paragon.pages.dev/css/default/search.css" rel="stylesheet">
+	<link href="https://paragon.pages.dev/css/default/scrollbar.css" rel="stylesheet">
+	<link href="https://paragon.pages.dev/css/default/pages/page.css" rel="stylesheet">
+	<link href="https://paragon.pages.dev/css/default/pages/full.css" rel="stylesheet">
+</head>
+<body>
+	<main>
+		<div class="header">
+			<input type="search" placeholder="Search..." oninput="window.Search(this.value)">
+		</div>
+
+		<div class="content">
+			{posts.map((async post => <Post title={post.frontmatter.title} date={post.frontmatter.date} content={await readFile(post.file)}/>))}
+		</div>
+	</main>
+
+	<script src="/escape-css.js" is:inline></script>
+</body>
+</html>
+
+<script type="module">
+	import { Init } from "https://paragon.pages.dev/js/paragon.js";
+	Init();
+
+	let readPosts = new Set(JSON.parse(localStorage.getItem("Read Posts") ?? "[]"));
+
+	var links = document.querySelectorAll("a");
+
+	for (let article of document.querySelectorAll("article")) {
+		let details = article.querySelector("details");
+		let checkbox = article.querySelector(`input[type="checkbox"]`);
+
+		checkbox.checked = readPosts.has(article.title) ?? false;
+
+		details.addEventListener("toggle", () => {
+			if (details.open) {
+				window.SaveRead(article.title, true);
+				checkbox.checked = true;
+			}
+		});
+	}
+
+	window.Search = (phrase) => {
+		phrase = phrase.toLowerCase();
+
+		for (let article of document.querySelectorAll("article")) {
+			let title = article.querySelector("h1").textContent.toLowerCase();
+			let content = article.querySelector("p").textContent.toLowerCase();
+
+			if (title.includes(phrase) || content.includes(phrase)) {
+				article.style.display = "";
+			}
+			else {
+				article.style.display = "none";
+			}
+		}
+	}
+
+	window.SaveRead = (title, read) => {
+		let readPosts = new Set(JSON.parse(localStorage.getItem("Read Posts") ?? "[]"));
+
+		for (let post of readPosts) {
+			if (document.querySelector(`article[title="${window.EscapeCss(post)}"]`) === null)
+				readPosts.delete(post);
+		}
+
+        if (read) readPosts.add(title);
+		else readPosts.delete(title);
+
+        localStorage.setItem("Read Posts", JSON.stringify([...readPosts]));
+	}
+</script>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+		gap: 1.2rem;
+		overflow: hidden;
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.content {
+		flex: 1;
+		overflow: hidden auto;
+	}
+
+	.content:empty::after {
+		content: "No announcements. Try changing your filter or searching for something else.";
+
+		display: block;
+		width: 100%;
+
+		margin-top: 0.4rem;
+
+		text-align: center;
+
+		font-size: 1.4rem;
+	}
+</style>
