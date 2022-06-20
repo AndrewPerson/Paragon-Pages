@@ -69,6 +69,9 @@ jobs:
       matrix: ${{ fromJson(needs.generate-deploy-matrix.outputs.matrix) }}
     
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Navigate to directory
         run: cd ./${{ matrix.project.directory }}
 
