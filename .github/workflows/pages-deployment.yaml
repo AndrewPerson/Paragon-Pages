@@ -32,7 +32,7 @@ jobs:
         run: echo "::set-output name=matrix::$(node generate-deploy-matrix.js)"
 
       - name: Print matrix
-        run: echo "${{ steps.generate-matrix.outputs.matrix }}""
+        run: echo '${{ steps.generate-matrix.outputs.matrix }}'
 
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
