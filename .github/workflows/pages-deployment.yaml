@@ -27,11 +27,11 @@ jobs:
         uses: lots0logs/gh-action-get-changed-files@2.1.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-        if: inputs == null
+        if: inputs.directories == null
 
       - name: Write directories to upload
         run: echo ${{ inputs.directories }} > $HOME/files.json
-        if: inputs != null
+        if: inputs.directories != null
 
       - name: Install Node.js 16.x
         uses: actions/setup-node@v2
