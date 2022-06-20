@@ -62,7 +62,6 @@ jobs:
 
     permissions:
       contents: read
-      deployments: write
 
     strategy:
       fail-fast: false
