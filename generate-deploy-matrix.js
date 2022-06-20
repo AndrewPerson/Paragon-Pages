@@ -33,7 +33,7 @@ console.log(JSON.stringify({
             name: config.name,
             directory: config.directory,
             build: config.build || null,
-            upload: config.build || null
+            upload: config.upload || null
         })
     )
 }));
