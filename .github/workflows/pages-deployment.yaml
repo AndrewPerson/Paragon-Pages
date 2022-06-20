@@ -7,7 +7,7 @@ jobs:
   generate-deploy-matrix:
     runs-on: ubuntu-latest
 
-    name: "Generate deploy matrix"
+    name: Generate deploy matrix from changed Pages
 
     permissions:
       contents: read
@@ -35,14 +35,15 @@ jobs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
 
   deploy:
-    # Hack to check if length of array is not 0, as github actions doesn't like that.
+    # Check if length of array is not 0, as github actions doesn't like that.
+    # Previous job outputs null if array is empty
     if: needs.generate-deploy-matrix.outputs.matrix.project != null
 
     needs: generate-deploy-matrix
 
     runs-on: ubuntu-latest
 
-    name: Deploy to Cloudflare Pages
+    name: Deploy changed Pages to Cloudflare Pages
 
     permissions:
       contents: read
@@ -53,14 +54,18 @@ jobs:
       matrix: ${{ fromJson(needs.generate-deploy-matrix.outputs.matrix) }}
     
     steps:
+      - name: Navigate to directory
+        run: cd ${{ matrix.project.directory }}
+
       - name: Build
         run: ${{ matrix.project.build }}
         if: matrix.project.build != null
 
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Navigate out of directory if the root directory needs to be uploaded
+        run: cd ..
+        if: matrix.project.upload == null
         
-      - name: Publish
+      - name: Publish root folder for Page
         uses: cloudflare/pages-action@1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -68,3 +73,14 @@ jobs:
           projectName: ${{ matrix.project.name }}
           directory: ${{ matrix.project.directory }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        if: matrix.project.upload == null
+      
+      - name: Publish subfolder for Page
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ matrix.project.name }}
+          directory: ${{ matrix.project.upload }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        if: matrix.project.upload != null

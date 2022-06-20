@@ -1,4 +1,11 @@
 {
     "name": "award-scheme-points-paragon-pages",
-    "build": null
+    "metadata": {
+        "navIcon": "/nav-icon.svg",
+        "preview": false,
+        "description": "Displays your award scheme points.",
+        "icon": "/icon.svg",
+        "darkIcon": "/dark-icon.svg",
+        "version": "0.0.3"
+    }
 }

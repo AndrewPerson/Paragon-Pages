@@ -1,0 +1,71 @@
+:host {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    touch-action: none;
+}
+
+#point1,
+#point2 {
+    --size: 1.2rem;
+
+    position: absolute;
+
+    width: var(--size);
+    height: var(--size);
+
+    background-color: var(--surface4);
+    border-radius: calc(var(--size) / 2);
+
+    transform: translate(-50%, -50%);
+
+    z-index: 3;
+
+    cursor: move;
+}
+
+#point1:focus-visible,
+#point2:focus-visible {
+    outline: none;
+    background-color: var(--surface2);
+    box-shadow: 0 0 0 0.4rem var(--surface4), var(--shadow);;
+}
+
+#point1::after,
+#point2::after {
+    content: "";
+
+    display: block;
+
+    width: calc(var(--size) * 2);
+    height: calc(var(--size) * 2);
+
+    margin: calc(var(--size) / -2);
+}
+
+#barcode-canvas {
+    position: absolute;
+
+    box-sizing: border-box;
+
+    filter: contrast(5);
+
+    border: solid 1.5rem white;
+
+    z-index: 2;
+}
+
+#save {
+    width: 1.7rem;
+    height: 1.7rem;
+    position: absolute;
+    top: 1.25%;
+    right: 1.25%;
+    border-radius: 0.25rem;
+}

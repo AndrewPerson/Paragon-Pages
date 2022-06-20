@@ -1,0 +1,106 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.barcode-container {
+    position: relative;
+    width: 100%;
+    height: 8.5rem
+}
+
+#barcode {
+    width: 100%;
+    height: 100%;
+    filter: contrast(5);
+}
+
+.barcode-container:hover > #barcode,
+.barcode-container:focus > #barcode,
+.barcode-container:focus-within > #barcode {
+    filter: blur(5px);
+}
+
+.button-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 100%;
+    height: 100%;
+}
+
+.barcode-container:hover > .button-container,
+.barcode-container:focus > .button-container,
+.barcode-container:focus-within > .button-container {
+    display: flex;
+}
+
+button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+button * {
+    cursor: pointer;
+}
+
+a, a * {
+    cursor: pointer;
+}
+
+.preview-option {
+    width: 3rem;
+    height: 3rem;
+
+    background-color: var(--surface2);
+
+    border-radius: 1.5rem;
+
+    padding: 0.5rem;
+    box-sizing: border-box;
+    
+    box-shadow: hsl(var(--main-hue) 10% 10%) var(--shadow-x) var(--shadow-y) var(--shadow-spread);
+}
+
+.preview-option > svg {
+    width: 100%;
+    height: 100%;
+}
+
+.preview-option:focus-visible {
+    box-shadow: 0 0 0 0.4rem var(--surface4), var(--shadow),
+                hsl(var(--main-hue) 10% 10%) var(--shadow-x) var(--shadow-y) var(--shadow-spread);
+    outline: none;
+}
+
+.barcode-input-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+#barcode-input {
+    flex: 1;
+    min-width: 0;
+}
+
+#scan {
+    width: 2rem;
+    height: 2rem;
+}

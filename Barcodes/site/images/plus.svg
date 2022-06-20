@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="210px" height="210px" viewBox="0 0 210 210" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <g id="Group" transform="translate(5 5)">
+    <path d="M0 100C0 44.7715 44.7715 0 100 0C155.228 0 200 44.7715 200 100C200 155.228 155.228 200 100 200C44.7715 200 0 155.228 0 100Z" id="Ellipse" fill="none" fill-rule="evenodd" stroke="var(--text3)" stroke-width="5"/>
+    <text style="fill: var(--text3); font-family: Arial, sans-serif; font-size: 200px; white-space: pre;" x="41.572" y="167.29">+</text>
+  </g>
+</svg>

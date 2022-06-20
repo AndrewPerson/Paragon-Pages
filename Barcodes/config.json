@@ -1,0 +1,13 @@
+{
+    "name": "barcodes-paragon-pages",
+    "build": "node build.js",
+    "upload": "site",
+    "metadata": {
+        "navIcon": "/nav-icon.svg",
+        "preview": true,
+        "description": "Allows you to create and scan multiple student ID barcodes.",
+        "icon": "/icon.svg",
+        "darkIcon": "/dark-icon.svg",
+        "version": "0.0.1"
+    }
+}

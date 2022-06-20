@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Barcodes</title>
+
+    <base href="/">
+    
+    <link href="https://paragon.pages.dev/css/app.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/scrollbar.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/pages/page.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/pages/full.css" rel="stylesheet">
+
+    <link href="css/index.css" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <barcodes-display id="barcodes"></barcodes-display>
+    </main>
+
+    <barcode-overlay id="barcode-overlay" style="display: none"></barcode-overlay>
+    
+    <script async type="module" src="dist/index.js"></script>
+    <script async src="js/jsbarcode.js" onload="document.getElementById('barcodes')?.renderBarcodes?.()"></script>
+</body>
+
+</html>
