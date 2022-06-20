@@ -28,7 +28,7 @@ for (let directory of directories) {
 
 if (configs.length != 0) console.log(JSON.stringify({
     project: configs.map(config => {
-        let fullUploadPath = path.resolve(config.directory, config.upload ?? "").split("/");
+        let fullUploadPath = [...config.directory.split("/"), ...(config.upload ?? "").split("/")];
 
         return {
             name: config.name,
