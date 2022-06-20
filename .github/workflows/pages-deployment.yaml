@@ -1,7 +1,14 @@
-on: [
-  push,
-  workflow_dispatch
-]
+on: 
+  push:
+    branches:
+      - main
+  
+  workflow_dispatch:
+    inputs:
+      directories:
+        description: JSON array of directories to rebuild and upload.
+        type: string
+        required: true
 
 jobs:
   generate-deploy-matrix:
@@ -20,6 +27,11 @@ jobs:
         uses: lots0logs/gh-action-get-changed-files@2.1.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+        if: inputs == null
+
+      - name: Write directories to upload
+        run: echo ${{ inputs.directories }} > $HOME/files.json
+        if: inputs != null
 
       - name: Install Node.js 16.x
         uses: actions/setup-node@v2
