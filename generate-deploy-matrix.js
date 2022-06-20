@@ -7,8 +7,6 @@ let directories = new Set();
 for (let file of files) {
     let parts = file.split("/");
 
-    if (parts.length == 1) continue;
-
     let directory = file.split("/")[0];
 
     directories.add(directory);
