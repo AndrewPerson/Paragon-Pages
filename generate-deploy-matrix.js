@@ -27,8 +27,8 @@ for (let directory of directories) {
     }
 }
 
-console.log(JSON.stringify({
-    project: configs.length == 0 ? null : configs.map(config => 
+if (configs.length != 0) console.log(JSON.stringify({
+    project: configs.map(config => 
         ({
             name: config.name,
             directory: config.directory,

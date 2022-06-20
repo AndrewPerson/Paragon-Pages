@@ -52,7 +52,7 @@ jobs:
   deploy:
     # Check if length of array is not 0, as github actions doesn't like that.
     # Previous job outputs null if array is empty
-    if: needs.generate-deploy-matrix.outputs.matrix.project != null
+    if: needs.generate-deploy-matrix.outputs.matrix != null
 
     needs: generate-deploy-matrix
 
