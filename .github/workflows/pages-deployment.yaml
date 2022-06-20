@@ -70,7 +70,7 @@ jobs:
     
     steps:
       - name: Navigate to directory
-        run: cd ${{ matrix.project.directory }}
+        run: cd ./${{ matrix.project.directory }}
 
       - name: Build
         run: ${{ matrix.project.build }}
