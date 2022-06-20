@@ -76,22 +76,12 @@ jobs:
         run: cd ./${{ matrix.project.directory }}; ${{ matrix.project.build }}
         if: matrix.project.build != null
         
-      - name: Publish root folder for Page
+      - name: Publish Page
         uses: cloudflare/pages-action@1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ matrix.project.name }}
-          directory: ${{ matrix.project.directory }}
+          directory: ${{ matrix.project.upload }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-        if: matrix.project.upload == null
-      
-      - name: Publish subfolder for Page
-        uses: cloudflare/pages-action@1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ matrix.project.name }}
-          directory: ${{matrix.project.directory}}/${{ matrix.project.upload }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-        if: matrix.project.upload != null
+        working-directory: ${{ matrix.project.directory }}

@@ -1,12 +1,10 @@
-import { readFile, access } from "fs/promises";
+import { readFile } from "fs/promises";
 import process from "process";
 
 let files = JSON.parse(await readFile(`${process.env.HOME}/files.json`));
 
 let directories = new Set();
 for (let file of files) {
-    let parts = file.split("/");
-
     let directory = file.split("/")[0];
 
     directories.add(directory);
@@ -33,7 +31,7 @@ if (configs.length != 0) console.log(JSON.stringify({
             name: config.name,
             directory: config.directory,
             build: config.build || null,
-            upload: config.upload || null
+            upload: config.upload || "."
         })
     )
 }));
