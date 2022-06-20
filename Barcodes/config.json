@@ -1,6 +1,6 @@
 {
     "name": "barcodes-paragon-pages",
-    "build": "node build.js",
+    "build": "bash ./build.sh",
     "upload": "site",
     "metadata": {
         "navIcon": "/nav-icon.svg",

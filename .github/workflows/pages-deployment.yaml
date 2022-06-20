@@ -73,7 +73,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build
-        run: cd ./${{ matrix.project.directory }} & ${{ matrix.project.build }}
+        run: cd ./${{ matrix.project.directory }}; ${{ matrix.project.build }}
         if: matrix.project.build != null
         
       - name: Publish root folder for Page
