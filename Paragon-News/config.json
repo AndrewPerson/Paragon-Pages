@@ -1,5 +1,5 @@
 {
-    "name": "news-paragon-pages",
+    "site": "news-paragon-pages",
     "build": "bash ./build.sh",
     "upload": "dist",
     "metadata": {

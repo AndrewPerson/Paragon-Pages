@@ -32,7 +32,7 @@ if (configs.length != 0) console.log(JSON.stringify({
         if (config.upload) fullUploadPath.push(...config.upload.split("/"));
 
         return {
-            name: config.name,
+            site: config.site,
             build: config.build ?? null,
             "build-working-directory": config.directory,
             upload: fullUploadPath[fullUploadPath.length - 1],
