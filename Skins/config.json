@@ -1,0 +1,11 @@
+{
+    "name": "skins-paragon-pages",
+    "metadata": {
+        "navIcon": "/nav-icon.svg",
+        "preview": false,
+        "description": "Allows you to create and find skins for Paragon.",
+        "icon": "/icon.svg",
+        "darkIcon": "/dark-icon.svg",
+        "version": "0.0.0"
+    }
+}
