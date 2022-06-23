@@ -6,5 +6,5 @@ window.updateCss = (css) => {
     window.parent.postMessage({
         command: "Register Skin",
         data: css
-    });
+    }, "*");
 }
