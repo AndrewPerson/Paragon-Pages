@@ -86,13 +86,26 @@ a, a * {
     outline: none;
 }
 
-.barcode-input-container {
+.input-container {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    align-items: center;
+
+    width: 100%;
+}
+
+label {
+    font-size: 1rem;
+    color: var(--text3);
+}
+
+.scan-container {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 1rem;
 
     width: 100%;
-    margin-top: 0.5rem;
 }
 
 #barcode-input {

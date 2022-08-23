@@ -24,13 +24,16 @@ import cameraSvg from "images/camera.svg";
 //@ts-ignore
 import imgCss from "https://paragon.pages.dev/css/default/img.css";
 //@ts-ignore
-import searchCss from "https://paragon.pages.dev/css/default/search.css";
+import searchCss from "https://paragon.pages.dev/css/default/text-input.css";
 //@ts-ignore
 import barcodePreviewCss from "./barcode-preview.css";
 
 @customElement("barcode-preview")
 export class BarcodePreview extends LitElement {
     static styles = [imgCss, searchCss, barcodePreviewCss];
+
+    @property()
+    name: string = "";
 
     @property()
     barcode: string;
@@ -52,12 +55,35 @@ export class BarcodePreview extends LitElement {
     
     supportsBarcodeDetector: boolean = ("BarcodeDetector" in window);
 
+    InputName(e: InputEvent) {
+        let name = (e.target as HTMLInputElement).value;
+
+        this.UpdateInformation(name, this.barcode);
+    }
+
     InputBarcode(e: InputEvent) {
         let barcode = (e.target as HTMLInputElement).value;
 
-        let barcodes: string[] = JSON.parse(localStorage.getItem("Barcodes") || "[]");
+        this.UpdateInformation(this.name, barcode);
+    }
 
-        barcodes.splice(this.index, 1, barcode);
+    UpdateInformation(name: string, barcode: string) {
+        let barcodes: ({ name: string, barcode: string } | string)[] = JSON.parse(localStorage.getItem("Barcodes") || "[]");
+
+        barcodes.splice(this.index, 1, {
+            name: name,
+            barcode: barcode
+        });
+
+        localStorage.setItem("Barcodes", JSON.stringify(barcodes));
+
+        (document.getElementById("barcodes") as Barcodes).requestUpdate();
+    }
+
+    DeleteInformation() {
+        let barcodes: ({ name: string, barcode: string } | string)[] = JSON.parse(localStorage.getItem("Barcodes") || "[]");
+
+        barcodes.splice(this.index, 1);
 
         localStorage.setItem("Barcodes", JSON.stringify(barcodes));
 
@@ -78,13 +104,7 @@ export class BarcodePreview extends LitElement {
     Delete() {
         if (!confirm(`Do you want to delete ${this.barcode.trim() == "" ? "this empty barcode" : `the barcode for ${this.barcode}`}?`)) return;
 
-        let barcodes: string[] = JSON.parse(localStorage.getItem("Barcodes") || "[]");
-
-        barcodes.splice(this.index, 1);
-
-        localStorage.setItem("Barcodes", JSON.stringify(barcodes));
-
-        (document.getElementById("barcodes") as Barcodes).requestUpdate();
+        this.DeleteInformation();
     }
 
     async Scan() {
@@ -93,11 +113,7 @@ export class BarcodePreview extends LitElement {
         this.barcode = barcode;
         this.barcodeInput.value = barcode;
 
-        let barcodes: string[] = JSON.parse(localStorage.getItem("Barcodes") || "[]");
-
-        barcodes.splice(this.index, 1, barcode);
-
-        localStorage.setItem("Barcodes", JSON.stringify(barcodes));
+        this.UpdateInformation(this.name, barcode);
     }
 
     updated() {
@@ -136,11 +152,23 @@ export class BarcodePreview extends LitElement {
             </div>
         </div>
 
-        <div class="barcode-input-container">
-            <input id="barcode-input" type="search" value="${this.barcode}" @input="${this.InputBarcode}">
-            ${this.supportsBarcodeDetector ? html`<button title="scan" id="scan" @click="${this.Scan}">
-                ${cameraSvg}
-            </button>` : nothing}
+        <div class="input-container">
+            <label for="name">Name</label>
+            <input type="text" name="name" value="${this.name}" @input="${this.InputName}">
+
+            <label for="id">Barcode</label>
+            <div class="scan-container">
+                <input id="barcode-input" name="id" type="text" value="${this.barcode}" @input="${this.InputBarcode}">
+                ${
+                    this.supportsBarcodeDetector ?
+                    html`
+                        <button title="scan" id="scan" @click="${this.Scan}">
+                            ${cameraSvg}
+                        </button>
+                    ` :
+                    nothing
+                }
+            </div>
         </div>
         `
     }
