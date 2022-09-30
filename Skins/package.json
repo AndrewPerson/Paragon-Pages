@@ -1,0 +1,19 @@
+{
+  "name": "skins-paragon-pages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@codemirror/lang-css": "^6.0.0",
+    "codemirror": "^6.0.1"
+  },
+  "devDependencies": {
+    "axios": "^0.27.2",
+    "esbuild": "^0.15.10",
+    "esbuild-plugin-clear": "^1.0.1",
+    "svgo": "^2.8.0"
+  },
+  "type": "module"
+}

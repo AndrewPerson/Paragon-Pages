@@ -1,8 +1,10 @@
 {
     "site": "skins-paragon-pages",
+    "build": "bash ./build.sh",
+    "upload": "site",
     "metadata": {
         "navIcon": "/nav-icon.svg",
-        "preview": false,
+        "preview": true,
         "description": "Allows you to create and find skins for Paragon.",
         "icon": "/icon.svg",
         "darkIcon": "/dark-icon.svg",
