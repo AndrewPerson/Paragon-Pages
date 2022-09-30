@@ -5,10 +5,16 @@ Init();
 import { EditorView, basicSetup } from "codemirror";
 import { keymap } from "@codemirror/view";
 import { indentWithTab } from "@codemirror/commands";
+import { Compartment, EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
 
 let view = new EditorView({
-    extensions: [basicSetup, keymap.of(indentWithTab), css()],
+    extensions: [
+        basicSetup,
+        keymap.of(indentWithTab),
+        new Compartment().of(EditorState.tabSize.of(4)),
+        css()
+    ],
     parent: document.getElementById("editor")
 });
 
