@@ -18,7 +18,7 @@ let view = new EditorView({
     parent: document.getElementById("editor")
 });
 
-document.getElementById("upload-css").addEventListener("click", e => {
+document.getElementById("update-css").addEventListener("click", e => {
     window.parent.postMessage({
         command: "Register Skin",
         data: {
