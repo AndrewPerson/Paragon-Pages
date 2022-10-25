@@ -14,13 +14,12 @@ renderData(data, years[0] ?? "");
 window.updateFilter = (filter) => renderData(data, filter);
 
 Init().then(() => getNewData().then(newData => {
-    console.log(newData);
     if (newData === null) {
         showError();
         return;
     }
     
-    data = newData;
+    renderYearsFilters(getUniqueYears(newData));
     renderData(newData, yearsFilter.value);
 }).catch(() => showError()).finally(() => CloseNotification("award-scheme-points-loader")));
 
