@@ -64,17 +64,20 @@ function renderData(data, filter) {
 
     for (let i = 0; i < filteredData.length; i++) {
         let row;
+        let newRow = false;
 
         if (i < children.length) {
             row = children[i];
         }
         else {
             row = pointsTemplate.cloneNode(true);
-            points.appendChild(row);
+            newRow = true;
         }
 
         row.querySelector(".name").textContent = points.activity;
         row.querySelector(".points").textContent = points.points;
+
+        if (newRow) points.appendChild(row);
     }
 
     total.textContent = filteredData.reduce(
