@@ -19,8 +19,9 @@ Init().then(() => getNewData().then(newData => {
         return;
     }
     
-    renderYearsFilters(getUniqueYears(newData));
-    renderData(newData, yearsFilter.value);
+    let years = getUniqueYears(newData);
+    renderYearsFilters(years);
+    renderData(newData, yearsFilter.value == "" ? years[0] : yearsFilter.value);
 }).catch(() => showError()).finally(() => CloseNotification("award-scheme-points-loader")));
 
 function getUniqueYears(data) {
