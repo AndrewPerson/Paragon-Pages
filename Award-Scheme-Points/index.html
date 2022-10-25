@@ -15,21 +15,35 @@
     </head>
 
     <body>
+        <template id="row-template">
+            <tr>
+                <th class="name" scope="row"></th>
+                <td class="points"></td>
+            </tr>
+        </template>
+
         <main>
             <div class="header">
-                <select id="years"></select>
+                <select id="years" oninput="window.updateFilter(this.value)"></select>
             </div>
 
-            <table id="points-table">
+            <table>
                 <thead>
                     <tr>
                         <th>Activity</th>
-                        <th>Points</th>
+                        <th scope="col">Points</th>
                     </tr>
                 </thead>
                 <tbody id="points">
                     
                 </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th scope="row">Total</th>
+                        <td id="total"></td>
+                    </tr>
+                </tfoot>
             </table>
         </main>
     </body>

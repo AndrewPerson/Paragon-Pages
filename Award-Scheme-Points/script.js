@@ -1,174 +1,162 @@
 import { Init, GetToken, RefreshToken, ShowNotification, CloseNotification } from "https://paragon.pages.dev/js/paragon.js";
-import uhtml from "/uhtml.js";
 
-const { render, html } = uhtml;
+const yearsFilter = document.getElementById("years");
+const points = document.getElementById("points");
+const pointsTemplate = document.getElementById("points-template").content;
+const total = document.getElementById("total");
 
-let participationData = GetCachedData();
+let data = JSON.parse(localStorage.getItem("Participation") ?? "[]");
+let years = getUniqueYears(data)
 
-if (participationData !== null) UpdateContentAutoFilter(participationData);
+renderYearsFilters(years);
+renderData(data, years[0] ?? "");
 
-function ShowError() {
-    CloseNotification("award-scheme-points-loader");
-    ShowNotification("award-scheme-points-error", "Could not get award scheme points.");
+window.updateFilter = (filter) => renderData(data, filter);
+
+Init().then(() => getNewData().then(newData => {
+    if (newData === null) {
+        ShowError();
+        return;
+    }
+    
+    data = newData;
+    renderData(data, yearsFilter.value);
+}).catch(() => ShowError()).finally(() => CloseNotification("award-scheme-points-loader")));
+
+function getUniqueYears(data) {
+    return data.filter((item, i) => data.findIndex(x => x.year === item.year) === i).map(x => x.year);
 }
 
-window.UpdateFilter = (filter) => {
-    if (participationData !== null && participationData !== undefined)
-        UpdateContent(participationData, filter);
-}
+function renderYearsFilters(years) {
+    let children = yearsFilter.children;
 
-function UpdateContentAutoFilter(data) {
-    let filter = document.getElementById("years").value;
-
-    if (filter === undefined || filter === null || filter.trim() == "")
-        UpdateContent(data, data[0].year);
-    else
-        UpdateContent(data, filter);
-}
-
-function UpdateContent(data, filter) {
-    let years = new Set();
-
-    for (let points of data) {
-        if (!years.has(points.year)) years.add(points.year);
+    if (children.length > years.length) {
+        for (let i = children.length - 1; i >= years.length; i--) {
+            yearsFilter.removeChild(children[i]);
+        }
     }
 
-    let awardSchemePoints = data.filter(points => points.category.trim().length != 0 && points.year == filter);
-
-    render(document.querySelector("main"), html`
-    <div class="header">
-        <select id="years" oninput="window.UpdateFilter(this.value)">
-            ${[...years.values()].map(year => html`
-            <option value="${year}">
-                ${year}
-            </option>
-            `)}
-        </select>
-    </div>
-
-    <table id="points-table">
-        <thead>
-            <tr>
-                <th>Activity</th>
-                <th>Points</th>
-            </tr>
-        </thead>
-        <tbody id="points">
-            ${awardSchemePoints.map(points => points.category == "ZZ" ?
-            html`
-            <tr class="divider"></tr>
-            <tr class="total">
-                <td>Total Points</td>
-                <td>${points.points}</td>
-            </tr>
-            ` :
-            html`
-            <tr>
-                <td>${points.activity}</td>
-                <td>${points.points}</td>
-            </tr>
-            `)}
-        </tbody>
-    </table>
-    `);
-}
-
-function GetCachedData() {
-    let participation = localStorage.getItem("Participation");
-
-    return participation === null ? null : JSON.parse(participation);
-}
-
-async function GetData(token) {
-    try {
-        var response = await fetch("https://student.sbhs.net.au/api/details/participation.json", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+    for (let i = 0; i < filter.length; i++) {
+        if (i < children.length) {
+            children[i].innerText = years[i];
+        } else {
+            let option = document.createElement("option");
+            option.innerText = years[i];
+            yearsFilter.appendChild(option);
+        }
     }
-    catch (e) {
-        let participation = GetCachedData();
+}
 
-        if (participation === null)
-            return {
-                data: null,
-                refresh: false
-            };
+function renderData(data, filter) {
+    const filteredData = data.filter(points => points.category.trim().length != 0 && points.category != "ZZ" && points.year == filter);
+    const children = points.childNodes;
 
-        return {
-            data: participation,
-            refresh: false
-        };
+    if (filteredData.length == 0) {
+        points.innerHTML = "";
+        return;
     }
 
-    if (response.status == 401)
-        return {
-            data: null,
-            refresh: true
-        };
+    if (children.length > filteredData.length) {
+        for (let i = children.length - 1; i >= filteredData.length; i--) {
+            points.removeChild(children[i]);
+        }
+    }
 
-    if (response.status != 200)
-        return {
-            data: null,
-            refresh: false
-        };
+    for (let i = 0; i < filteredData.length; i++) {
+        let row;
 
-    let text = await response.text();
-
-    localStorage.setItem("Participation", text);
-
-    return {
-        data: JSON.parse(text),
-        refresh: false
-    };
-}
-
-async function RefreshData() {
-    let refreshedToken = await RefreshToken();
-
-    if (refreshedToken !== null) {
-        let data = await GetData(refreshedToken);
-
-        if (data.refresh) {
-            ShowError();
+        if (i < children.length) {
+            row = children[i];
         }
         else {
-            participationData = data.data;
-
-            if (participationData !== null && participationData !== undefined)
-                UpdateContentAutoFilter(participationData);
-            else
-                ShowError();
+            row = pointsTemplate.cloneNode(true).firstElementChild;
+            points.appendChild(row);
         }
+
+        row.querySelector(".name").textContent = points.activity;
+        row.querySelector(".points").textContent = points.points;
     }
-    else ShowError();
+
+    total.textContent = filteredData.reduce(
+        (a, b) => a.points + b.points,
+        filteredData[0]
+    );
 }
 
-Init().then(async () => {
+async function getNewData() {
     ShowNotification("award-scheme-points-loader", "Updating award scheme points...", true);
 
     let token = await GetToken();
 
-    if (token !== null) {
-        let data = await GetData(token);
-
-        if (data.refresh) {
-            await RefreshData();
-        }
-        else {
-            if (participationData !== null && participationData !== undefined)
-                UpdateContentAutoFilter(participationData);
-            else
-                await RefreshData();
-        }
-    }
-    else {
-        await RefreshData();
+    if (token === null) {
+        showError();
+        return null;
     }
 
+    let data = await getData(token);
+
+    if (data.refresh) {
+        token = await RefreshToken();
+
+        if (token === null) {
+            showError();
+            return null;
+        }
+
+        data = await getData(token);
+    }
+
+    if (data.data === null) {
+        showError();
+        return null;
+    }
+
+    return data.data;
+}
+
+async function getData(token) {
+    try {
+        let response = await fetch("https://student.sbhs.net.au/api/details/participation.json", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status == 401) {
+            return {
+                refresh: true,
+                data: null
+            };
+        }
+
+        if (response.status != 200) {
+            return {
+                refresh: false,
+                data: null
+            };
+        }
+
+        let data = await response.text();
+
+        localStorage.setItem("Participation", data);
+
+        return {
+            refresh: false,
+            data: JSON.parse(data)
+        };
+    }
+    catch (e) {
+        return {
+            refresh: false,
+            data: null
+        };
+    }
+}
+
+function showError() {
     CloseNotification("award-scheme-points-loader");
-});
+    ShowNotification("award-scheme-points-error", "Could not get participation data.");
+}
 
 try {
     navigator.serviceWorker.getRegistration("/sw.js").then(sw => sw.unregister());

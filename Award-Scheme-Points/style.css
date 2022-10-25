@@ -15,7 +15,7 @@ main {
     width: 100%;
 }
 
-#points-table {
+table {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -63,13 +63,7 @@ tr {
     gap: 1rem;
 }
 
-.divider {
-    height: calc(var(--font-size) * 1.5);
-    flex: 1;
-    border: none;
-}
-
-.total {
+tfoot {
     position: sticky;
     bottom: 0;
 
