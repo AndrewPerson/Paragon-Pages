@@ -69,7 +69,7 @@ function renderData(data, filter) {
             row = children[i];
         }
         else {
-            row = pointsTemplate.cloneNode(true).firstElementChild;
+            row = pointsTemplate.cloneNode(true);
             points.appendChild(row);
         }
 
