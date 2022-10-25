@@ -14,13 +14,14 @@ renderData(data, years[0] ?? "");
 window.updateFilter = (filter) => renderData(data, filter);
 
 Init().then(() => getNewData().then(newData => {
+    console.log(newData);
     if (newData === null) {
         showError();
         return;
     }
     
     data = newData;
-    renderData(data, yearsFilter.value);
+    renderData(newData, yearsFilter.value);
 }).catch(() => showError()).finally(() => CloseNotification("award-scheme-points-loader")));
 
 function getUniqueYears(data) {
@@ -39,7 +40,8 @@ function renderYearsFilters(years) {
     for (let i = 0; i < years.length; i++) {
         if (i < children.length) {
             children[i].innerText = years[i];
-        } else {
+        }
+        else {
             let option = document.createElement("option");
             option.innerText = years[i];
             yearsFilter.appendChild(option);
