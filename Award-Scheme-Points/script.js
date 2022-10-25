@@ -49,7 +49,7 @@ function renderYearsFilters(years) {
 
 function renderData(data, filter) {
     const filteredData = data.filter(points => points.category.trim().length != 0 && points.category != "ZZ" && points.year == filter);
-    const children = points.childNodes;
+    const children = points.children;
 
     if (filteredData.length == 0) {
         points.innerHTML = "";
