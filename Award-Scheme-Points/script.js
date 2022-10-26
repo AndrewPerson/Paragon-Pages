@@ -14,15 +14,21 @@ renderData(data, years[0] ?? "");
 window.updateFilter = (filter) => renderData(data, filter);
 
 Init().then(() => getNewData().then(newData => {
+    CloseNotification("award-scheme-points-loader");
+
     if (newData === null) {
         showError();
         return;
     }
+
+    data = newData;
     
     let years = getUniqueYears(newData);
     renderYearsFilters(years);
     renderData(newData, yearsFilter.value == "" ? years[0] : yearsFilter.value);
-}).catch(() => showError()).finally(() => CloseNotification("award-scheme-points-loader")));
+}).catch(() => {
+    showError();
+}));
 
 function getUniqueYears(data) {
     return data.filter((item, i) => data.findIndex(x => x.year === item.year) === i).map(x => x.year);
