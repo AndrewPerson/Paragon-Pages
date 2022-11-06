@@ -88,10 +88,7 @@ function renderData(data, filter) {
         if (newRow) points.appendChild(row);
     }
 
-    total.textContent = filteredData.reduce(
-        (a, b) => a + parseInt(b.points),
-        0
-    );
+    total.textContent = data.find(x => x.category == "ZZ" && x.year == filter).points;
 }
 
 async function getNewData() {
