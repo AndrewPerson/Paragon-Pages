@@ -1,0 +1,72 @@
+:root {
+    --fc-button-text-color: var(--text2);
+    --fc-button-bg-color: var(--surface2);
+    --fc-button-border-color: var(--surface4);
+    --fc-button-hover-bg-color: var(--surface3);
+    --fc-button-hover-border-color: var(--surface4);
+    --fc-button-active-bg-color: var(--surface4);
+    --fc-button-active-border-color: transparent;
+
+    --fc-today-bg-color: var(--surface4);
+
+    --fc-event-bg-color: var(--surface4);
+    --fc-event-border-color: var(--surface4);
+
+    --fc-neutral-bg-color: var(--surface4);
+    --fc-list-event-hover-bg-color: var(--surface3) !important;
+}
+
+:where(*) {
+    color: var(--text1);
+}
+
+.fc-button-primary:active, .fc-button-primary.fc-button-active {
+    --fc-button-text-color: var(--text4);
+    text-shadow: 0.1rem 0.1rem var(--shadow-colour);
+}
+
+.fc-button-primary:focus {
+    box-shadow: 0 0 0 0.1rem var(--surface4), var(--shadow) !important;
+    outline: none;
+}
+
+.fc-icon {
+    color: var(--fc-button-text-color);
+}
+
+.fc-col-header-cell-cushion {
+    color: var(--text1);
+}
+
+.fc-day-today {
+    --fc-event-border-color: var(--surface2);
+}
+
+.fc-event:hover {
+    background-color: var(--surface3) !important;
+}
+
+.fc-day-today .fc-event:hover,
+.fc-v-event:hover,
+.fc-h-event:hover {
+    background-color: hsl(var(--main-hue) 90% 75%) !important;
+}
+
+.fc-event-title {
+    text-overflow: ellipsis;
+}
+
+.fc-list-day > th {
+    z-index: 1;
+}
+
+.fc {
+    font-size: 1rem !important;
+    height: 100%;
+}
+
+@media(max-aspect-ratio: 1/1) {
+    .fc-toolbar-title {
+        display: none;
+    }
+}

@@ -1,0 +1,105 @@
+main {
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    padding: 1rem;
+}
+
+#calendar {
+    flex: 1;
+    overflow: hidden;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#filter-tags {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-title {
+    margin: 0;
+}
+
+#add-filter {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 100%;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    padding: 0;
+
+    color: transparent;
+
+    background-image: url(/images/plus.svg);
+    background-blend-mode: difference;
+    background-repeat: no-repeat;
+    background-size: 1.5rem;
+    background-position: center;
+}
+
+.filter-instance {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    
+    height: 1.5rem;
+
+    border: solid 0.05rem var(--surface4);
+    border-radius: 1.5rem;
+    
+    box-shadow: var(--small-shadow);
+}
+
+.filter-name {
+    margin: 0;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+}
+
+.remove-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 1.5rem;
+    height: 1.5rem;
+
+    padding: 0;
+
+    border: solid 0.05rem transparent;
+    border-radius: 100%;
+
+    box-shadow: none;
+}
+
+.remove-filter:focus-visible {
+    box-shadow: 0 0 0 0.4rem var(--surface4);
+}
+
+.remove-filter > img {
+    width: 50%;
+    height: 50%;
+}

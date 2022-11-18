@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Calendar</title>
+
+    <base href="/">
+    
+    <link href="https://paragon.pages.dev/css/app.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/img.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/button.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/scrollbar.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/pages/page.css" rel="stylesheet">
+    <link href="https://paragon.pages.dev/css/default/pages/full.css" rel="stylesheet">
+
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/fc.css" rel="stylesheet">
+    <link href="dist/index.css" rel="stylesheet">
+</head>
+
+<body>
+    <template id="filter-template">
+        <div class="filter-instance">
+            <p class="filter-name"></p>
+            <button class="remove-filter" onclick="window.removeFilter(this.parentElement.dataset.filter)">
+                <img src="/images/cross.svg">
+            </button>
+        </div>
+    </template>
+
+    <main>
+        <div class="toolbar">
+            <div class="filter-container">
+                <p class="filter-title">Filter:</p>
+                <div id="filter-tags">
+
+                </div>
+                <select class="button" id="add-filter" oninput="window.addFilter(this.value, this.options[this.selectedIndex].textContent)">
+                    <option value="7">Year 7</option>
+                    <option value="8">Year 8</option>
+                    <option value="9">Year 9</option>
+                    <option value="10">Year 10</option>
+                    <option value="11">Year 11</option>
+                    <option value="12">Year 12</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <button class="add-calendar">
+                Add Calendar
+            </button>
+        </div>
+
+        <div id="calendar"></div>
+    </main>
+
+    <script async type="module" src="dist/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+a.button {
+    text-decoration: none;
+    cursor: default;
+}
+
+:where(button, .button) {
+    border: solid 0.05rem var(--surface4);
+    background-color: var(--surface2);
+    color: var(--text2);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    box-shadow: var(--small-shadow);
+    font-size: 1rem;
+}
+
+:where(button:hover, .button:hover) {
+    background-color: var(--surface3);
+    color: var(--text2);
+}
+
+:where(button:active, .button:active) {
+    border: solid 0.05rem transparent;
+    color: var(--text4);
+    text-shadow: 0.1rem 0.1rem var(--shadow-colour);
+    background-color: var(--surface4);
+}
+
+:where(button:focus-visible, .button:focus-visible) {
+    box-shadow: 0 0 0 0.4rem var(--surface4), var(--shadow);
+    outline: none;
+}

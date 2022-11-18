@@ -1,0 +1,27 @@
+{
+    "type": "module",
+    "dependencies": {
+        "@fullcalendar/core": "^5.11.3",
+        "@fullcalendar/daygrid": "^5.11.3",
+        "@fullcalendar/list": "^5.11.3",
+        "@fullcalendar/timegrid": "^5.11.3",
+        "@rollup/plugin-node-resolve": "^13.3.0",
+        "@rollup/plugin-typescript": "^8.4.0",
+        "esbuild-linux-64": "^0.14.2",
+        "rollup": "^2.79.0",
+        "rollup-plugin-postcss": "^4.0.2",
+        "svgo": "^2.8.0"
+    },
+    "devDependencies": {
+        "axios": "^0.27.2",
+        "css-loader": "^6.7.1",
+        "esbuild-plugin-clear": "^1.0.1",
+        "lit": "^2.0.2",
+        "local-web-server": "^5.1.1",
+        "ts-loader": "^9.3.1",
+        "typescript": "^4.5.4"
+    },
+    "scripts": {
+        "serve": "npx ws -d site --static.extensions html -p 5555"
+    }
+}
