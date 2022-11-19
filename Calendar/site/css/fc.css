@@ -14,10 +14,33 @@
 
     --fc-neutral-bg-color: var(--surface4);
     --fc-list-event-hover-bg-color: var(--surface3) !important;
+
+    --highlight-hover: hsl(var(--main-hue) 90% 75%);
+}
+
+html.dark {
+    --highlight-hover: hsl(var(--main-hue) 60% 20%);
 }
 
 :where(*) {
     color: var(--text1);
+}
+
+.fc {
+    font-size: 1rem !important;
+    height: 100%;
+}
+
+.fc table {
+    border-collapse: separate !important;
+}
+
+.fc-scrollgrid-section {
+    height: 0 !important;
+}
+
+.fc-timegrid-divider {
+    display: none;
 }
 
 .fc-button-primary:active, .fc-button-primary.fc-button-active {
@@ -32,6 +55,10 @@
 
 .fc-icon {
     color: var(--fc-button-text-color);
+}
+
+.fc-timegrid-axis, .fc-col-header-cell {
+    background-color: var(--surface2);
 }
 
 .fc-col-header-cell-cushion {
@@ -49,7 +76,7 @@
 .fc-day-today .fc-event:hover,
 .fc-v-event:hover,
 .fc-h-event:hover {
-    background-color: hsl(var(--main-hue) 90% 75%) !important;
+    background-color: var(--highlight-hover) !important;
 }
 
 .fc-event-title {
@@ -58,11 +85,6 @@
 
 .fc-list-day > th {
     z-index: 1;
-}
-
-.fc {
-    font-size: 1rem !important;
-    height: 100%;
 }
 
 @media(max-aspect-ratio: 1/1) {
