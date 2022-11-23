@@ -10,7 +10,6 @@ import { ShowNotification } from "https://paragon.pages.dev/js/paragon.js";
 
 import { Barcodes } from "./barcodes";
 import { BarcodeOverlay } from "./barcode-overlay";
-import { BarcodeScanner } from "./barcode-scanner";
 
 //@ts-ignore
 import fullscreenSvg from "images/fullscreen.svg";
@@ -102,18 +101,9 @@ export class BarcodePreview extends LitElement {
     }
 
     Delete() {
-        if (!confirm(`Do you want to delete ${this.barcode.trim() == "" ? "this empty barcode" : `the barcode for ${this.barcode}`}?`)) return;
+        if (!confirm(`Do you want to delete ${this.barcode.trim() == "" ? "this empty barcode" : `the barcode for ${this.name}`}?`)) return;
 
         this.DeleteInformation();
-    }
-
-    async Scan() {
-        let barcode = await BarcodeScanner.Scan();
-        
-        this.barcode = barcode;
-        this.barcodeInput.value = barcode;
-
-        this.UpdateInformation(this.name, barcode);
     }
 
     updated() {
@@ -159,15 +149,6 @@ export class BarcodePreview extends LitElement {
             <label for="id">Barcode</label>
             <div class="scan-container">
                 <input id="barcode-input" name="id" type="text" value="${this.barcode}" @input="${this.InputBarcode}">
-                ${
-                    this.supportsBarcodeDetector ?
-                    html`
-                        <button title="scan" id="scan" @click="${this.Scan}">
-                            ${cameraSvg}
-                        </button>
-                    ` :
-                    nothing
-                }
             </div>
         </div>
         `
