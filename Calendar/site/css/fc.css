@@ -17,11 +17,13 @@
     --fc-neutral-bg-color: var(--surface4);
     --fc-list-event-hover-bg-color: var(--surface3) !important;
 
+    --fc-border-color: var(--surface4);
+
     --highlight-hover: hsl(var(--main-hue) 90% 75%);
 }
 
 html.dark {
-    --fc-today-bg-color: hsl(var(--main-hue) 90% 10%);
+    --fc-today-bg-color: hsl(var(--main-hue) 90% 15%);
     --highlight-hover: hsl(var(--main-hue) 60% 20%);
 }
 
