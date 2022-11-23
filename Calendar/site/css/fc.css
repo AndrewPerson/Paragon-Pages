@@ -7,7 +7,7 @@
     --fc-button-active-bg-color: var(--surface4);
     --fc-button-active-border-color: transparent;
 
-    --fc-today-bg-color: var(--surface4);
+    --fc-today-bg-color: hsl(var(--main-hue) 90% 90%);
 
     --fc-event-bg-color: var(--surface4);
     --fc-event-border-color: var(--surface4);
@@ -21,6 +21,7 @@
 }
 
 html.dark {
+    --fc-today-bg-color: hsl(var(--main-hue) 90% 10%);
     --highlight-hover: hsl(var(--main-hue) 60% 20%);
 }
 
@@ -67,10 +68,6 @@ html.dark {
     color: var(--text1);
 }
 
-.fc-day-today {
-    --fc-event-border-color: var(--surface2);
-}
-
 .fc-event:hover, .fc-event:focus {
     background-color: var(--surface3) !important;
 }
@@ -80,16 +77,13 @@ html.dark {
     outline: none;
 }
 
-.fc-day-today .fc-event:hover,
 .fc-v-event:hover,
 .fc-h-event:hover,
-.fc-day-today .fc-event:focus,
 .fc-v-event:focus,
 .fc-h-event:focus {
     background-color: var(--highlight-hover) !important;
 }
 
-.fc-day-today .fc-event:focus,
 .fc-v-event:focus,
 .fc-h-event:focus {
     box-shadow: 0 0 0 0.1rem var(--surface3), var(--shadow) !important;
