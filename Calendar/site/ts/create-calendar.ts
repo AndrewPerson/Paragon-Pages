@@ -3,12 +3,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
+import { computePosition, flip, shift, offset, arrow, hide, autoUpdate } from '@floating-ui/dom';
+
 import { getData, sbhsCalendarToEvents, } from "./data";
 import { showError } from "./notifications"
 
 const calendarEl = document.getElementById("calendar");
 
-export function createCalendar(mobileMaxAspectRatio: number = 1) {
+export function createCalendar(tooltip: HTMLElement, mobileMaxAspectRatio: number = 1) {
     let filter: string[] = [];
 
     function getEvents(info: any, success: any, failure: any) {
@@ -34,7 +36,7 @@ export function createCalendar(mobileMaxAspectRatio: number = 1) {
 
     let mobile = window.innerWidth / window.innerHeight < mobileMaxAspectRatio;
 
-    let calendar = createRawCalendar(mobile, "", getEvents);
+    let calendar = createRawCalendar(mobile, "", getEvents, tooltip, tooltip.querySelector("#arrow")!);
 
     window.addEventListener("resize", () => {
         let newMobile = window.innerWidth / window.innerHeight < mobileMaxAspectRatio;
@@ -43,7 +45,7 @@ export function createCalendar(mobileMaxAspectRatio: number = 1) {
             mobile = newMobile;
             calendar.destroy();
 
-            calendar = createRawCalendar(mobile, calendar.view.type, getEvents);
+            calendar = createRawCalendar(mobile, calendar.view.type, getEvents, tooltip, tooltip.querySelector("#arrow")!);
 
             calendar.render();
 
@@ -75,7 +77,7 @@ export function createCalendar(mobileMaxAspectRatio: number = 1) {
 const mobileViews = ["timeGridDay", "listWeek"];
 const desktopViews = ["dayGridMonth", "timeGridDay", "listWeek"];
 
-function createRawCalendar(mobile: boolean, currentView: string, getEvents: any) {
+function createRawCalendar(mobile: boolean, currentView: string, getEvents: any, tooltipEl: HTMLElement, arrowEl: HTMLElement) {
     return new Calendar(calendarEl!, {
         plugins: [ dayGridPlugin, timeGridPlugin, listPlugin ],
         initialView: mobile ? (
@@ -104,6 +106,66 @@ function createRawCalendar(mobile: boolean, currentView: string, getEvents: any)
         lazyFetching: true,
         stickyHeaderDates: true,
         expandRows: true,
-        events: getEvents
+        events: getEvents,
+        eventDidMount: (info) => {
+            let cleanup: (() => void) | null = null;
+            info.el.addEventListener("pointerover", e => {
+                if (info.view.type == "dayGridMonth" || info.view.type == "timeGridDay") {
+                    if (cleanup !== null) {
+                        cleanup();
+                    }
+
+                    tooltipEl.style.display = "block";
+                    tooltipEl.querySelector("#tooltip-text")!.textContent = info.event.title;
+
+                    cleanup = autoUpdate(info.el, tooltipEl, () => {
+                        computePosition(info.el, tooltipEl, {
+                            middleware: [
+                                offset(6),
+                                flip({ boundary: calendarEl!.querySelector(".fc-view-harness")! }),
+                                shift({ boundary: calendarEl!.querySelector(".fc-view-harness")!, padding: 5 }),
+                                arrow({ element: arrowEl }),
+                                hide({ boundary: calendarEl!.querySelector(".fc-view-harness")! })
+                            ]
+                        }).then(({ x, y, placement, middlewareData }) => {
+                            if ((middlewareData.hide?.referenceHidden ?? false)) {
+                                tooltipEl.style.visibility = "hidden";
+                            }
+                            else {
+                                tooltipEl.style.visibility = "visible";
+                            }
+
+                            tooltipEl.style.left = `${x}px`;
+                            tooltipEl.style.top = `${y}px`;
+                            
+                            const staticSide = {
+                                top: 'bottom',
+                                right: 'left',
+                                bottom: 'top',
+                                left: 'right',
+                            }[placement.split('-')[0]];
+
+                            Object.assign(arrowEl.style, {
+                                left: middlewareData.arrow?.x !== undefined ? `${middlewareData.arrow.x}px` : '',
+                                top: middlewareData.arrow?.y !== undefined ? `${middlewareData.arrow.y}px` : '',
+                                right: '',
+                                bottom: '',
+                                [staticSide!]: '-4px',
+                            });
+                        });
+                    });
+                }
+            });
+
+            info.el.addEventListener("pointerout", e => {
+                if (info.view.type == "dayGridMonth" || info.view.type == "timeGridDay") {
+                    if (cleanup !== null) {
+                        cleanup();
+                        tooltipEl.style.display = "none";
+                        cleanup = null;
+                    }
+                }
+            });
+        }
     });
 }

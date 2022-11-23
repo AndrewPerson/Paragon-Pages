@@ -5,7 +5,9 @@ import typescript from '@rollup/plugin-typescript';
 module.exports = {
     input: 'site/ts/index.ts',
     plugins: [
-        nodeResolve(),
+        nodeResolve({
+            browser: true
+        }),
         postcss({
             config: false, // don't attempt to load a postcss config
             // extract: true

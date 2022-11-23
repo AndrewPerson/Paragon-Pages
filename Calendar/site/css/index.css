@@ -103,3 +103,34 @@ main {
     width: 50%;
     height: 50%;
 }
+
+#tooltip {
+    width: max-content;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--surface4);
+    color: var(--text1);
+    padding: 5px;
+    border-radius: 4px;
+    font-size: .85rem;
+    pointer-events: none;
+
+    z-index: 98;
+}
+
+#tooltip > p {
+    margin: 0;
+}
+
+#arrow {
+    position: absolute;
+    background: var(--surface4);
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+}
+
+#tooltip, #arrow {
+    box-shadow: var(--small-shadow);
+}

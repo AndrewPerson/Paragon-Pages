@@ -9,7 +9,7 @@ addFilter.value = "";
 const filterTemplate = (document.getElementById("filter-template") as HTMLTemplateElement).content.firstElementChild!;
 const filterContainer = document.getElementById("filter-tags");
 
-let calendar = createCalendar();
+let calendar = createCalendar(document.getElementById("tooltip")!);
 
 let filter: string[] = [];
 
