@@ -108,64 +108,73 @@ function createRawCalendar(mobile: boolean, currentView: string, getEvents: any,
         expandRows: true,
         events: getEvents,
         eventDidMount: (info) => {
+            if (info.view.type == "listWeek") return;
+
+            info.el.tabIndex = 1;
+
             let cleanup: (() => void) | null = null;
-            info.el.addEventListener("pointerover", e => {
-                if (info.view.type == "dayGridMonth" || info.view.type == "timeGridDay") {
-                    if (cleanup !== null) {
-                        cleanup();
-                    }
 
-                    tooltipEl.style.display = "block";
-                    tooltipEl.querySelector("#tooltip-text")!.textContent = info.event.title;
+            function showTooltip() {
+                if (cleanup !== null) {
+                    return;
+                }
 
-                    cleanup = autoUpdate(info.el, tooltipEl, () => {
-                        computePosition(info.el, tooltipEl, {
-                            middleware: [
-                                offset(6),
-                                flip({ boundary: calendarEl!.querySelector(".fc-view-harness")! }),
-                                shift({ boundary: calendarEl!.querySelector(".fc-view-harness")!, padding: 5 }),
-                                arrow({ element: arrowEl }),
-                                hide({ boundary: calendarEl!.querySelector(".fc-view-harness")! })
-                            ]
-                        }).then(({ x, y, placement, middlewareData }) => {
-                            if ((middlewareData.hide?.referenceHidden ?? false)) {
-                                tooltipEl.style.visibility = "hidden";
-                            }
-                            else {
-                                tooltipEl.style.visibility = "visible";
-                            }
+                tooltipEl.style.display = "block";
+                tooltipEl.querySelector("#tooltip-text")!.textContent = info.event.title;
 
-                            tooltipEl.style.left = `${x}px`;
-                            tooltipEl.style.top = `${y}px`;
-                            
-                            const staticSide = {
-                                top: 'bottom',
-                                right: 'left',
-                                bottom: 'top',
-                                left: 'right',
-                            }[placement.split('-')[0]];
+                cleanup = autoUpdate(info.el, tooltipEl, () => {
+                    computePosition(info.el, tooltipEl, {
+                        middleware: [
+                            offset(6),
+                            flip({ boundary: calendarEl!.querySelector(".fc-view-harness")! }),
+                            shift({ boundary: calendarEl!.querySelector(".fc-view-harness")!, padding: 5 }),
+                            arrow({ element: arrowEl }),
+                            hide({ boundary: calendarEl!.querySelector(".fc-view-harness")! })
+                        ]
+                    }).then(({ x, y, placement, middlewareData }) => {
+                        if ((middlewareData.hide?.referenceHidden ?? false)) {
+                            tooltipEl.style.visibility = "hidden";
+                        }
+                        else {
+                            tooltipEl.style.visibility = "visible";
+                        }
 
-                            Object.assign(arrowEl.style, {
-                                left: middlewareData.arrow?.x !== undefined ? `${middlewareData.arrow.x}px` : '',
-                                top: middlewareData.arrow?.y !== undefined ? `${middlewareData.arrow.y}px` : '',
-                                right: '',
-                                bottom: '',
-                                [staticSide!]: '-4px',
-                            });
+                        tooltipEl.style.left = `${x}px`;
+                        tooltipEl.style.top = `${y}px`;
+                        
+                        const staticSide = {
+                            top: 'bottom',
+                            right: 'left',
+                            bottom: 'top',
+                            left: 'right',
+                        }[placement.split('-')[0]];
+
+                        Object.assign(arrowEl.style, {
+                            left: middlewareData.arrow?.x !== undefined ? `${middlewareData.arrow.x}px` : '',
+                            top: middlewareData.arrow?.y !== undefined ? `${middlewareData.arrow.y}px` : '',
+                            right: '',
+                            bottom: '',
+                            [staticSide!]: '-4px',
                         });
                     });
-                }
-            });
+                });
+            }
 
-            info.el.addEventListener("pointerout", e => {
-                if (info.view.type == "dayGridMonth" || info.view.type == "timeGridDay") {
-                    if (cleanup !== null) {
-                        cleanup();
-                        tooltipEl.style.display = "none";
-                        cleanup = null;
-                    }
+            function hideTooltip() {
+                if (cleanup === null) {
+                    return;
                 }
-            });
+
+                cleanup();
+                cleanup = null;
+
+                tooltipEl.style.display = "none";
+            }
+
+            info.el.addEventListener("mouseenter", _ => showTooltip());
+            info.el.addEventListener("mouseleave", _ => hideTooltip());
+            info.el.addEventListener("focus", _ => showTooltip());
+            info.el.addEventListener("blur", _ => hideTooltip());
         }
     });
 }

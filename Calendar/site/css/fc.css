@@ -12,6 +12,8 @@
     --fc-event-bg-color: var(--surface4);
     --fc-event-border-color: var(--surface4);
 
+    --fc-event-selected-overlay-color: rgba(0, 0, 0, 0);
+
     --fc-neutral-bg-color: var(--surface4);
     --fc-list-event-hover-bg-color: var(--surface3) !important;
 
@@ -69,14 +71,29 @@ html.dark {
     --fc-event-border-color: var(--surface2);
 }
 
-.fc-event:hover {
+.fc-event:hover, .fc-event:focus {
     background-color: var(--surface3) !important;
+}
+
+.fc-event:focus {
+    box-shadow: 0 0 0 0.1rem var(--surface4), var(--shadow) !important;
+    outline: none;
 }
 
 .fc-day-today .fc-event:hover,
 .fc-v-event:hover,
-.fc-h-event:hover {
+.fc-h-event:hover,
+.fc-day-today .fc-event:focus,
+.fc-v-event:focus,
+.fc-h-event:focus {
     background-color: var(--highlight-hover) !important;
+}
+
+.fc-day-today .fc-event:focus,
+.fc-v-event:focus,
+.fc-h-event:focus {
+    box-shadow: 0 0 0 0.1rem var(--surface3), var(--shadow) !important;
+    outline: none;
 }
 
 .fc-event-title {
