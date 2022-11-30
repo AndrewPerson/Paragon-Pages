@@ -85,11 +85,18 @@ async function getRawData(start: Date, end: Date, token: string) {
 
         let data = await response.text();
 
-        localStorage.setItem("Participation", data);
+        let fixedData = "";
+        for (let line of data.split("\n")) {
+            let trimmed = line.trim();
+
+            if (trimmed.startsWith("<")) continue;
+
+            fixedData += trimmed;
+        }
 
         return {
             refresh: false,
-            data: JSON.parse(data)
+            data: JSON.parse(fixedData)
         };
     }
     catch (e) {
