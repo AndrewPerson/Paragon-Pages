@@ -1,4 +1,4 @@
-const yearGroupRegex = /(y(?:ea)?rs?\s+(?:\d+\s*(?:,|&)?\s*)+)/g;
+const yearGroupRegex = /(y(?:ea)?rs?\s+(?:\d+(\s|-)*(?:,|&)?\s*)+)/g;
 const yearRegex = /\d+/g;
 
 const additionalRegexps = new Map<string[], RegExp>([
